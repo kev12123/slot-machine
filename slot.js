@@ -13,28 +13,31 @@ $(document).ready(function() {
     * Global variables
     */
     var counter;
+   
     var completed = 0,
         imgHeight = 6000,
         posArr = [
             0, //product 1
-            500,//product 2
-            1000,//product 
-            1500,//product 1
-            2000,//product 2
-            2500,//product 3
-            3000,//product 1
-            3500,//product 2
-            4000,//product 3
-            4500,//prodcut 1
-            5000,//product 2
-            5550,//product 3
+            500,//2
+            1000,//3
+            1500,//1
+            2000,//2
+            2500,//3
+            3000,//1
+            3500,//2
+            4000,//3
+            4500,//1
+            
+
+
+           
            
         ];
     
     var win = [];
-    win[0] = win[1500] = win[3000] = 1;
-     win[500] = win[2000] = win[3500] = 2;
-      win[1000] = win[2500] = win[3000] = 3;
+    win[0] = win[1507] = win[3006] = 1;
+     win[510] = win[2003] = win[3500] = 2;
+      win[1015] = win[2498] = win[4015] = 3;
        
   
 
@@ -48,7 +51,7 @@ $(document).ready(function() {
         this.si = null; //holds setInterval object for the given slot
         this.el = el; //dom element of the slot
         this.maxSpeed = max; //max speed this slot can have
-        this.pos = posArr[0,1500,3000]; //final position of the slot    
+        this.pos = posArr[500]; //final position of the slot    
 
         $(el).pan({
             fps:30,
@@ -102,35 +105,40 @@ $(document).ready(function() {
     * @method finalPos
     * Finds the final position of the slot
     */
-    Slot.prototype.finalPos = function() {
-    var el = this.el,
+      Slot.prototype.finalPos = function() {
+        var el = this.el,
             el_id,
             pos,
-            posMin = 200,
+            posMin = 200000000000,
             best,
             bgPos,
             i,
             j,
             k;
+            counter ++;
+
 
         el_id = $(el).attr('id');
-        pos = $(el).css('background-position'); //for some unknown reason, this does not work in IE
+        //pos = $(el).css('background-position'); //for some unknown reason, this does not work in IE
         pos = document.getElementById(el_id).style.backgroundPosition;
         pos = pos.split(' ')[1];
         pos = parseInt(pos, 10);
 
         for(i = 0; i < posArr.length; i++) {
-            
-                    if(pos ) {
+            for(j = 0;;j++) {
+                k = posArr[i] + (imgHeight * j);
+                if(k > pos) {
 
-                        posMin = pos;
+                    if((k - pos) < posMin) {
+                        posMin = k - pos;
                         best = k;
-                        this.pos = $(this.el).css('background-position', '0px 4px');;//update the final position of the slot
+                        this.pos=$(this.el).css('background-position', '0px 1000px')// PRODUCT 1 ('0px 0px') , PRODUCT 2 ('0px 500px') ,PRODUCT 3('0px 1000px;)
+                        
 
                     }
                     break;
-                
-            
+                }
+            }
         }
 
         best += imgHeight + 4;
@@ -138,7 +146,7 @@ $(document).ready(function() {
         $(el).animate({
             backgroundPosition:"(" + bgPos + ")"
         }, {
-            duration: 200,
+            duration: 2000,
             complete: function() {
                 completed ++;
             }
@@ -177,9 +185,9 @@ $(document).ready(function() {
     }
 
     //create slot objects
-    var a = new Slot('#slot1', 40, 1),
-        b = new Slot('#slot2', 50, 1),
-        c = new Slot('#slot3', 60, 1);
+    var a = new Slot('#slot1', 130, 1),
+        b = new Slot('#slot2', 150, 2),
+        c = new Slot('#slot3', 160, 4);
 
     /**
     * Slot machine controller
